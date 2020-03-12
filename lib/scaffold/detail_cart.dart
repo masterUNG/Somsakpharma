@@ -9,6 +9,14 @@ import 'package:somsakpharma/models/user_model.dart';
 import 'package:somsakpharma/utility/my_style.dart';
 import 'package:somsakpharma/utility/normal_dialog.dart';
 
+import '../utility/my_style.dart';
+import '../utility/my_style.dart';
+import '../utility/my_style.dart';
+import '../utility/my_style.dart';
+import '../utility/my_style.dart';
+import '../utility/my_style.dart';
+import '../utility/my_style.dart';
+
 class DetailCart extends StatefulWidget {
   final UserModel userModel;
   DetailCart({Key key, this.userModel}) : super(key: key);
@@ -36,6 +44,13 @@ class _DetailCartState extends State<DetailCart> {
   int index = 0;
   String comment = '', memberID;
 
+  List<String> listTrasport = [
+    '',
+    'รับสินค้าเองที่ร้าน สมศักดิ์เภสัช สอง',
+    'รถส่งของตามรอบส่งสินค้า ในเมืองเชียงใหม่และจังหวัดใกล้เคียง',
+    'รถขนส่งเอกชน',
+  ];
+
   // Method
   @override
   void initState() {
@@ -54,7 +69,7 @@ class _DetailCartState extends State<DetailCart> {
 
     String memberId = myUserModel.id.toString();
     String url = '${MyStyle().loadMyCart}$memberId';
-     print('url Detail Cart ====>>>>> $url');
+    print('url Detail Cart ====>>>>> $url');
 
     Response response = await get(url);
     var result = json.decode(response.body);
@@ -152,7 +167,21 @@ class _DetailCartState extends State<DetailCart> {
   }
 
   Widget showTitle(int index) {
-    return Text(productAllModels[index].title);
+    return Container(
+      padding: EdgeInsets.only(left: 16.0, right: 16.0),
+      width: MediaQuery.of(context).size.width,
+      child: Row(
+        children: <Widget>[
+          Container(
+            width: MediaQuery.of(context).size.width - 40,
+            child: Text(
+              productAllModels[index].title,
+              style: MyStyle().h2Style,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget editButton(int index, String size) {
@@ -230,7 +259,8 @@ class _DetailCartState extends State<DetailCart> {
     return FlatButton(
       child: Text('OK'),
       onPressed: () {
-        print('productID = $productID ,unitSize = $unitSize ,memberID = $memberID, newQTY = $newQTY');
+        print(
+            'productID = $productID ,unitSize = $unitSize ,memberID = $memberID, newQTY = $newQTY');
         editDetailCart(productID, unitSize, memberID);
         Navigator.of(context).pop();
       },
@@ -243,8 +273,7 @@ class _DetailCartState extends State<DetailCart> {
     String url =
         'http://somsakpharma.com/api/json_updatemycart.php?productID=$productID&unitSize=$unitSize&newQTY=$newQTY&memberId=$memberID';
 
-             print('url editDetailCart ====>>>>> $url');
-
+    print('url editDetailCart ====>>>>> $url');
 
     await get(url).then((response) {
       readCart();
@@ -332,10 +361,16 @@ class _DetailCartState extends State<DetailCart> {
     return lable.isEmpty
         ? SizedBox()
         : Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              Text('$price บาท/ $lable'),
-              Text('จำนวน $quantity'),
+              Text(
+                '$price บาท/ $lable',
+                style: MyStyle().h3Style,
+              ),
+              Text(
+                'จำนวน $quantity',
+                style: MyStyle().h3Style,
+              ),
               editAndDeleteButton(index, 's'),
             ],
           );
@@ -390,25 +425,27 @@ class _DetailCartState extends State<DetailCart> {
       shrinkWrap: true,
       itemCount: productAllModels.length,
       itemBuilder: (BuildContext buildContext, int index) {
-        return Column(
-          children: <Widget>[
-            showTitle(index),
-            showSText(index),
-            showMText(index),
-            showLText(index),
-            Divider(),
-          ],
+        return Card(
+          child: Column(
+            children: <Widget>[
+              showTitle(index),
+              showSText(index),
+              showMText(index),
+              showLText(index),
+              // Divider(),
+            ],
+          ),
         );
       },
     );
   }
 
   Widget showTotal() {
-    return Text(
-      'Total = $total BHT',
-      style: TextStyle(
-        fontSize: 30.0,
-        fontWeight: FontWeight.bold,
+    return Container(
+      padding: EdgeInsets.only(left: 16.0, top: 10.0),
+      child: Text(
+        'Total = $total BHT',
+        style: MyStyle().h1Style,
       ),
     );
   }
@@ -422,16 +459,8 @@ class _DetailCartState extends State<DetailCart> {
   }
 
   Widget showTitleTransport() {
-    List<String> list = [
-      '',
-      'รถส่งของ ตามสายส่ง',
-      'ส่งทางบริษัทขนส่ง (เอกชน)',
-      'รับสินค้าเองที่ พัฒนาเภสัช',
-      'รถส่งของตามรอบส่งสินค้า ในเมืองนครสวรรค์',
-      'รับสินค้าเองที่ คลังสินค้า (ซอยวัดท่าทอง)'
-    ];
     return Text(
-      'การจัดส่ง : ${list[index]}',
+      'การจัดส่ง : ${listTrasport[index]}',
       style: TextStyle(
         fontSize: 24.0,
       ),
@@ -439,28 +468,33 @@ class _DetailCartState extends State<DetailCart> {
   }
 
   Widget showTransport() {
-    return PopupMenuButton<String>(
-      onSelected: (String string) {
-        selectedTransport(string);
-      },
-      child: showTitleTransport(),
-      itemBuilder: (BuildContext context) {
-        return [
-          PopupMenuItem(
-            child: Text('รับสินค้าเองที่ร้าน สมศักดิ์เภสัช สอง'),
-            value: '1',
-          ),
-          PopupMenuItem(
-            child: Text('รถส่งของตามรอบส่งสินค้า ในเมืองเชียงใหม่และจังหวัดใกล้เคียง'),
-            value: '2',
-          ),
-          PopupMenuItem(
-            child: Text('รถขนส่งเอกชน'),
-            value: '3',
-          ),
-          
-        ];
-      },
+    return Container(
+      padding: EdgeInsets.only(left: 16.0, right: 16.0),
+      child: Card(
+        color: MyStyle().lightColor,
+        child: PopupMenuButton<String>(
+          onSelected: (String string) {
+            selectedTransport(string);
+          },
+          child: showTitleTransport(),
+          itemBuilder: (BuildContext context) {
+            return [
+              PopupMenuItem(
+                child: Text(listTrasport[1]),
+                value: '1',
+              ),
+              PopupMenuItem(
+                child: Text(listTrasport[2]),
+                value: '2',
+              ),
+              PopupMenuItem(
+                child: Text(listTrasport[3]),
+                value: '3',
+              ),
+            ];
+          },
+        ),
+      ),
     );
   }
 
@@ -484,7 +518,7 @@ class _DetailCartState extends State<DetailCart> {
       children: <Widget>[
         Container(
           margin: EdgeInsets.only(right: 30.0),
-          child: RaisedButton(
+          child: RaisedButton(color: MyStyle().textColor,
             onPressed: () {
               if (transport == null) {
                 normalDialog(context, 'ยังไม่เลือก  การขอส่ง',
@@ -497,7 +531,7 @@ class _DetailCartState extends State<DetailCart> {
                 submitThread();
               }
             },
-            child: Text('Submit'),
+            child: Text('Submit', style: TextStyle(color: Colors.white),),
           ),
         ),
       ],
@@ -542,6 +576,7 @@ class _DetailCartState extends State<DetailCart> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: MyStyle().textColor,
         title: Text('Detail Cart'),
       ),
       body: ListView(
