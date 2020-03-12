@@ -8,6 +8,10 @@ import 'package:somsakpharma/utility/my_style.dart';
 import 'package:somsakpharma/utility/normal_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../utility/my_style.dart';
+import '../utility/my_style.dart';
+import '../utility/my_style.dart';
+
 class Authen extends StatefulWidget {
   @override
   _AuthenState createState() => _AuthenState();
@@ -99,7 +103,6 @@ class _AuthenState extends State<Authen> {
         print('map = $map');
         userModel = UserModel.fromJson(map);
 
-        
         if (remember) {
           saveSharePreference();
         } else {
@@ -133,32 +136,53 @@ class _AuthenState extends State<Authen> {
 
   Widget userForm() {
     return Container(
+      decoration: MyStyle().boxLightGreen,
+      height: 35.0,
       width: 250.0,
       child: TextFormField(
-        initialValue: 'nott', // set default value
+        style: TextStyle(color: Colors.white),
+        // initialValue: 'nott', // set default value
         onSaved: (String string) {
           user = string.trim();
         },
         decoration: InputDecoration(
-          labelText: 'User :',
-          labelStyle: TextStyle(color: MyStyle().textColor),
+          contentPadding: EdgeInsets.only(
+            top: 2.0,
+          ),
+          prefixIcon: Icon(
+            Icons.account_box,
+            color: Colors.white,
+          ),
+          border: InputBorder.none,
+          hintText: 'User :',
+          hintStyle: TextStyle(color: Colors.white),
         ),
       ),
     );
   }
 
+  Widget mySizeBox() {
+    return SizedBox(
+      height: 10.0,
+    );
+  }
+
   Widget passwordForm() {
     return Container(
+      decoration: MyStyle().boxLightGreen,
+      height: 35.0,
       width: 250.0,
-      child: TextFormField(
-        initialValue: '1234', // set default value
+      child: TextFormField(style: TextStyle(color: Colors.white),
+        // initialValue: '1234', // set default value
         onSaved: (String string) {
           password = string.trim();
         },
         obscureText: true, // hide text key replace with
-        decoration: InputDecoration(
-          labelText: 'Pass :',
-          labelStyle: TextStyle(color: MyStyle().textColor),
+        decoration: InputDecoration(contentPadding: EdgeInsets.only(top: 2.0,),
+          border: InputBorder.none,
+          prefixIcon: Icon(Icons.lock, color: Colors.white,),
+          hintText: 'Pass :',
+          hintStyle: TextStyle(color: Colors.white,)
         ),
       ),
     );
@@ -166,9 +190,9 @@ class _AuthenState extends State<Authen> {
 
   Widget showLogo() {
     return Container(
-      width: 120.0,
-      height: 120.0,
-      child: Image.asset('images/logo.png'),
+      width: 150.0,
+      height: 150.0,
+      child: Image.asset('images/logo_master.png'),
     );
   }
 
@@ -193,22 +217,27 @@ class _AuthenState extends State<Authen> {
           decoration: BoxDecoration(
             gradient: RadialGradient(
               colors: [Colors.white, MyStyle().bgColor],
-              radius: 0.8,
+              radius: 1.5,
             ),
           ),
           child: Center(
             child: Form(
               key: formKey,
-              child: Column(
-                mainAxisSize: MainAxisSize.min, //
-                children: <Widget>[
-                  showLogo(),
-                  showAppName(),
-                  userForm(),
-                  passwordForm(),
-                  rememberCheckbox(),
-                  loginButton(),
-                ],
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min, //
+                  children: <Widget>[
+                    showLogo(),
+                    mySizeBox(),
+                    showAppName(),
+                    mySizeBox(),
+                    userForm(),
+                    mySizeBox(),
+                    passwordForm(),
+                    rememberCheckbox(),
+                    loginButton(),
+                  ],
+                ),
               ),
             ),
           ),
