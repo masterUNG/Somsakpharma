@@ -10,6 +10,11 @@ import 'package:somsakpharma/scaffold/detail_cart.dart';
 import 'package:somsakpharma/utility/my_style.dart';
 import 'package:somsakpharma/utility/normal_dialog.dart';
 
+import '../utility/my_style.dart';
+import '../utility/my_style.dart';
+import '../utility/my_style.dart';
+import '../utility/my_style.dart';
+
 class Detail extends StatefulWidget {
   final ProductAllModel productAllModel;
   final UserModel userModel;
@@ -92,13 +97,15 @@ class _DetailState extends State<Detail> {
 
   Widget showImage() {
     return Container(
-      height: 180.0,
-      child: Image.network(productAllModel.photo),
+      height: MediaQuery.of(context).size.height*0.5-66,
+      child: Image.network(productAllModel.photo, fit: BoxFit.cover,),
     );
   }
 
+  
+
   Widget showTitle() {
-    return Text(productAllModel.title);
+    return Text(productAllModel.title, style: MyStyle().h1Style,);
   }
 
   Widget showDetail() {
@@ -106,11 +113,11 @@ class _DetailState extends State<Detail> {
   }
 
   Widget showPackage(int index) {
-    return Text(unitSizeModels[index].lable);
+    return Text(unitSizeModels[index].lable, style: MyStyle().h2Style,);
   }
 
   Widget showPricePackage(int index) {
-    return Text('${unitSizeModels[index].price} บาท/ ');
+    return Text('${unitSizeModels[index].price} บาท/ ', style: MyStyle().h2Style,);
   }
 
   Widget showChoosePricePackage(int index) {
@@ -136,7 +143,7 @@ class _DetailState extends State<Detail> {
   Widget decButton(int index) {
     int value = amounts[index];
     return IconButton(
-      icon: Icon(Icons.remove_circle_outline),
+      icon: Icon(Icons.remove_circle_outline, ),
       onPressed: () {
         // print('dec index $index');
         if (value == 0) {
@@ -283,7 +290,7 @@ class _DetailState extends State<Detail> {
                 child: Text(
                   'Add to Cart',
                   style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
+                      color: Colors.white, fontWeight: FontWeight.bold),
                 ),
                 onPressed: () {
                   String productID = id;
@@ -359,9 +366,10 @@ class _DetailState extends State<Detail> {
 
   ListView showController() {
     return ListView(
-      padding: EdgeInsets.all(30.0),
+      padding: EdgeInsets.all(20.0),
       children: <Widget>[
         showImage(),
+        MyStyle().mySizeBox,
         showTitle(),
         showDetail(),
         showPrice(),

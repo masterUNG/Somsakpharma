@@ -33,6 +33,11 @@ class MyStyle {
     color: Colors.grey.shade300,
   );
 
+  Widget mySizeBox = SizedBox(
+    width: 10.0,
+    height: 16.0,
+  );
+
   String fontName = 'Sarabun';
 
   String readAllProduct =
