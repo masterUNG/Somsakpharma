@@ -14,6 +14,11 @@ import 'package:somsakpharma/widget/contact.dart';
 import 'package:somsakpharma/widget/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../utility/my_style.dart';
+import '../utility/my_style.dart';
+import '../utility/my_style.dart';
+import '../utility/my_style.dart';
+import '../utility/my_style.dart';
 import 'detail_cart.dart';
 
 class MyService extends StatefulWidget {
@@ -49,9 +54,10 @@ class _MyServiceState extends State<MyService> {
       leading: Icon(
         Icons.home,
         size: 36.0,
+        color: MyStyle().textColor,
       ),
-      title: Text('Home'),
-      subtitle: Text('Description Home'),
+      title: Text('Home', style: TextStyle(color: MyStyle().textColor),),
+      subtitle: Text('Description Home', style: TextStyle(color: MyStyle().mainColor),),
       onTap: () {
         setState(() {
           readCart();
@@ -170,7 +176,13 @@ class _MyServiceState extends State<MyService> {
   }
 
   Widget showAppName() {
-    return Text('Somsak Pharma');
+    return Text(
+      'Somsak Pharma',
+      style: TextStyle(
+        fontSize: 24.0,
+        color: MyStyle().textColor,
+      ),
+    );
   }
 
   Widget showLogin() {
@@ -178,21 +190,37 @@ class _MyServiceState extends State<MyService> {
     if (login == null) {
       login = '...';
     }
-    return Text('Login by $login');
+    return Text(
+      'Login by $login',
+      style: TextStyle(
+        color: MyStyle().mainColor,
+        fontStyle: FontStyle.italic,
+      ),
+    );
   }
 
   Widget showLogo() {
     return Container(
       width: 80.0,
       height: 80.0,
-      child: Image.asset('images/logo.png'),
+      child: Image.asset('images/logo_master.png'),
     );
   }
 
   Widget headDrawer() {
     return DrawerHeader(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('images/pharma.jpg'),
+          fit: BoxFit.cover,
+        ),
+      ),
       child: Column(
-        children: <Widget>[showLogo(), showAppName(), showLogin()],
+        children: <Widget>[
+          showLogo(),
+          showAppName(),
+          showLogin(),
+        ],
       ),
     );
   }
@@ -225,8 +253,8 @@ class _MyServiceState extends State<MyService> {
       setState(() {
         amontCart++;
       });
-       print('amontCart ===*******>>>> $amontCart');
-   }
+      print('amontCart ===*******>>>> $amontCart');
+    }
   }
 
   Widget showCart() {

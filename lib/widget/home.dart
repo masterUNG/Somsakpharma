@@ -9,11 +9,13 @@ import 'package:somsakpharma/models/user_model.dart';
 import 'package:somsakpharma/scaffold/detail.dart';
 import 'package:somsakpharma/scaffold/list_product.dart';
 
-class Home extends StatefulWidget {
+import '../utility/my_style.dart';
+import '../utility/my_style.dart';
 
+class Home extends StatefulWidget {
   final UserModel userModel;
 
-  Home ({Key key,this.userModel}):super(key:key);
+  Home({Key key, this.userModel}) : super(key: key);
 
   @override
   _HomeState createState() => _HomeState();
@@ -72,7 +74,7 @@ class _HomeState extends State<Home> {
         result['itemsProduct']; // dynamic    จะส่ง value อะไรก็ได้ รวมถึง null
     for (var map in mapItemProduct) {
       PromoteModel promoteModel = PromoteModel.fromJson(map);
-      
+
       ProductAllModel productAllModel = ProductAllModel.fromJson(map);
       String urlImage = promoteModel.photo;
       setState(() {
@@ -147,7 +149,7 @@ class _HomeState extends State<Home> {
   Widget promotion() {
     return Container(
       padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
-      height: MediaQuery.of(context).size.height * 0.25,
+      height: MediaQuery.of(context).size.height * 0.20,
       child:
           promoteLists.length == 0 ? myCircularProgress() : showCarouseSlider(),
     );
@@ -155,18 +157,18 @@ class _HomeState extends State<Home> {
 
   Widget suggest() {
     return Container(
-      color: Colors.grey.shade400,
-      height: MediaQuery.of(context).size.height * 0.25,
-      child:
-          suggestLists.length == 0 ? myCircularProgress() : showCarouseSliderSuggest(),
+      // color: Colors.grey.shade400,
+      height: MediaQuery.of(context).size.height * 0.20,
+      child: suggestLists.length == 0
+          ? myCircularProgress()
+          : showCarouseSliderSuggest(),
     );
   }
-
 
   void routeToListProduct(int index) {
     MaterialPageRoute materialPageRoute =
         MaterialPageRoute(builder: (BuildContext buildContext) {
-     return ListProduct(
+      return ListProduct(
         index: index,
         userModel: myUserModel,
       );
@@ -177,15 +179,27 @@ class _HomeState extends State<Home> {
   Widget topLeft() {
     return Container(
       width: MediaQuery.of(context).size.width * 0.4,
-      height: 80.0,
+      // height: 80.0,
       child: GestureDetector(
         child: Card(
-          color: Colors.green.shade100,
+          // color: Colors.green.shade100,
           child: Container(
+            padding: EdgeInsets.all(16.0),
             alignment: AlignmentDirectional(0.0, 0.0),
-            child: Text(
-              'Promotion',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,color: Colors.black),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  width: 120.0,
+                  child: Image.asset('images/promote.png'),
+                ),
+                Text(
+                  'Promotion',
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
+                ),
+              ],
             ),
           ),
         ),
@@ -200,15 +214,27 @@ class _HomeState extends State<Home> {
   Widget topRight() {
     return Container(
       width: MediaQuery.of(context).size.width * 0.4,
-      height: 80.0,
+      // height: 80.0,
       child: GestureDetector(
         child: Card(
-          color: Colors.green.shade100,
+          // color: Colors.green.shade100,
           child: Container(
+            padding: EdgeInsets.all(16.0),
             alignment: AlignmentDirectional(0.0, 0.0),
-            child: Text(
-              'New Product',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,color: Colors.black),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  width: 120,
+                  child: Image.asset('images/newproduct.png'),
+                ),
+                Text(
+                  'New Product',
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
+                ),
+              ],
             ),
           ),
         ),
@@ -223,15 +249,27 @@ class _HomeState extends State<Home> {
   Widget bottomLeft() {
     return Container(
       width: MediaQuery.of(context).size.width * 0.4,
-      height: 80.0,
+      // height: 80.0,
       child: GestureDetector(
         child: Card(
-          color: Colors.green.shade100,
+          // color: Colors.green.shade100,
           child: Container(
+            padding: EdgeInsets.all(16.0),
             alignment: AlignmentDirectional(0.0, 0.0),
-            child: Text(
-              'Update Price',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,color: Colors.black),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  width: 120.0,
+                  child: Image.asset('images/updateprice.png'),
+                ),
+                Text(
+                  'UpdatePrice',
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
+                ),
+              ],
             ),
           ),
         ),
@@ -246,15 +284,27 @@ class _HomeState extends State<Home> {
   Widget bottomRight() {
     return Container(
       width: MediaQuery.of(context).size.width * 0.4,
-      height: 80.0,
+      // height: 80.0,
       child: GestureDetector(
         child: Card(
-          color: Colors.green.shade100,
+          // color: Colors.green.shade100,
           child: Container(
+            padding: EdgeInsets.all(16.0),
             alignment: AlignmentDirectional(0.0, 0.0),
-            child: Text(
-              'Recommend',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,color: Colors.black),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  width: 120.0,
+                  child: Image.asset('images/recommend.png'),
+                ),
+                Text(
+                  'Recommend',
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
+                ),
+              ],
             ),
           ),
         ),
@@ -292,7 +342,8 @@ class _HomeState extends State<Home> {
 */
   Widget bottomMenu() {
     return Row(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      mainAxisSize: MainAxisSize.max,
       children: <Widget>[
         bottomLeft(),
         bottomRight(),
@@ -302,7 +353,8 @@ class _HomeState extends State<Home> {
 
   Widget topMenu() {
     return Row(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      mainAxisSize: MainAxisSize.max,
       children: <Widget>[
         topLeft(),
         topRight(),
@@ -310,17 +362,26 @@ class _HomeState extends State<Home> {
     );
   }
 
+  Widget mySizeBox() {
+    return SizedBox(
+      width: 10.0,
+      height: 30.0,
+    );
+  }
+
   Widget homeMenu() {
     return Container(
-     margin: EdgeInsets.only(top: 20.0),
-     alignment: Alignment(0.0, 0.0),
-      color: Colors.green.shade50,
-      height: MediaQuery.of(context).size.height * 0.5 - 81,
+      // margin: EdgeInsets.only(top: 20.0),
+      alignment: Alignment(0.0, 0.0),
+      // color: Colors.green.shade50,
+      // height: MediaQuery.of(context).size.height * 0.5 - 81,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           topMenu(),
+          mySizeBox(),
           bottomMenu(),
+          mySizeBox(),
         ],
       ),
     );
@@ -331,19 +392,36 @@ class _HomeState extends State<Home> {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
+          headTitle('Promotion today', Icons.add_shopping_cart),
+          promotion(),
+          headTitle('Suggest Item', Icons.perm_identity),
+          suggest(),
+          headTitle('Menu Home', Icons.home),
+          homeMenu(),
+        ],
+      ),
+    );
+  }
+
+  Widget headTitle(String string, IconData iconData) {
+    return Container(
+      padding: EdgeInsets.all(16.0),
+      child: Row(
+        children: <Widget>[
+          Icon(
+            iconData,
+            size: 36.0,
+            color: MyStyle().textColor,
+          ),
+          mySizeBox(),
           Text(
-            'Promotion today',
+            string,
             style: TextStyle(
-              fontSize: 22,
+              fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: Colors.green,
+              color: MyStyle().textColor,
             ),
           ),
-
-          promotion(),
-          suggest(),
-          //  homeMenu(),
-          homeMenu(),
         ],
       ),
     );

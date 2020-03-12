@@ -8,10 +8,6 @@ import 'package:somsakpharma/utility/my_style.dart';
 import 'package:somsakpharma/utility/normal_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../utility/my_style.dart';
-import '../utility/my_style.dart';
-import '../utility/my_style.dart';
-
 class Authen extends StatefulWidget {
   @override
   _AuthenState createState() => _AuthenState();
@@ -23,6 +19,7 @@ class _AuthenState extends State<Authen> {
   final formKey = GlobalKey<FormState>();
   UserModel userModel;
   bool remember = false; // false => unCheck      true = Check
+  bool status = true;
 
   // Method
   @override
@@ -40,6 +37,10 @@ class _AuthenState extends State<Authen> {
 
       if (user != null) {
         checkAuthen();
+      } else {
+        setState(() {
+          status = false;
+        });
       }
     } catch (e) {}
   }
@@ -47,15 +48,22 @@ class _AuthenState extends State<Authen> {
   Widget rememberCheckbox() {
     return Container(
       width: 250.0,
-      child: CheckboxListTile(
-        controlAffinity: ListTileControlAffinity.leading,
-        title: Text('Remember me'),
-        value: remember,
-        onChanged: (bool value) {
-          setState(() {
-            remember = value;
-          });
-        },
+      child: Theme(
+        data: Theme.of(context)
+            .copyWith(unselectedWidgetColor: MyStyle().textColor),
+        child: CheckboxListTile(
+          controlAffinity: ListTileControlAffinity.leading,
+          title: Text(
+            'Remember me',
+            style: TextStyle(color: MyStyle().textColor),
+          ),
+          value: remember,
+          onChanged: (bool value) {
+            setState(() {
+              remember = value;
+            });
+          },
+        ),
       ),
     );
   }
@@ -64,10 +72,16 @@ class _AuthenState extends State<Authen> {
   Widget loginButton() {
     return Container(
       width: 250.0,
-      child: OutlineButton(
+      child: RaisedButton(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        color: MyStyle().textColor,
         child: Text(
           'Login',
-          style: TextStyle(color: MyStyle().textColor),
+          style: TextStyle(
+            color: Colors.white,
+          ),
         ),
         onPressed: () {
           formKey.currentState.save();
@@ -172,18 +186,26 @@ class _AuthenState extends State<Authen> {
       decoration: MyStyle().boxLightGreen,
       height: 35.0,
       width: 250.0,
-      child: TextFormField(style: TextStyle(color: Colors.white),
+      child: TextFormField(
+        style: TextStyle(color: Colors.white),
         // initialValue: '1234', // set default value
         onSaved: (String string) {
           password = string.trim();
         },
         obscureText: true, // hide text key replace with
-        decoration: InputDecoration(contentPadding: EdgeInsets.only(top: 2.0,),
-          border: InputBorder.none,
-          prefixIcon: Icon(Icons.lock, color: Colors.white,),
-          hintText: 'Pass :',
-          hintStyle: TextStyle(color: Colors.white,)
-        ),
+        decoration: InputDecoration(
+            contentPadding: EdgeInsets.only(
+              top: 2.0,
+            ),
+            border: InputBorder.none,
+            prefixIcon: Icon(
+              Icons.lock,
+              color: Colors.white,
+            ),
+            hintText: 'Pass :',
+            hintStyle: TextStyle(
+              color: Colors.white,
+            )),
       ),
     );
   }
@@ -209,40 +231,50 @@ class _AuthenState extends State<Authen> {
     );
   }
 
+  Widget showProcess() {
+    return Center(
+      child: CircularProgressIndicator(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: RadialGradient(
-              colors: [Colors.white, MyStyle().bgColor],
-              radius: 1.5,
-            ),
+        child: status ? showProcess() : mainContent(),
+      ),
+    );
+  }
+
+  Container mainContent() {
+    return Container(
+        decoration: BoxDecoration(
+          gradient: RadialGradient(
+            colors: [Colors.white, MyStyle().bgColor],
+            radius: 1.5,
           ),
-          child: Center(
-            child: Form(
-              key: formKey,
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min, //
-                  children: <Widget>[
-                    showLogo(),
-                    mySizeBox(),
-                    showAppName(),
-                    mySizeBox(),
-                    userForm(),
-                    mySizeBox(),
-                    passwordForm(),
-                    rememberCheckbox(),
-                    loginButton(),
-                  ],
-                ),
+        ),
+        child: Center(
+          child: Form(
+            key: formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min, //
+                children: <Widget>[
+                  showLogo(),
+                  mySizeBox(),
+                  showAppName(),
+                  mySizeBox(),
+                  userForm(),
+                  mySizeBox(),
+                  passwordForm(),
+                  rememberCheckbox(),
+                  loginButton(),
+                ],
               ),
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 }

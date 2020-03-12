@@ -7,6 +7,9 @@ import 'package:somsakpharma/models/product_all_model.dart';
 import 'package:somsakpharma/models/user_model.dart';
 import 'package:somsakpharma/utility/my_style.dart';
 
+import '../utility/my_style.dart';
+import '../utility/my_style.dart';
+import '../utility/my_style.dart';
 import 'detail.dart';
 import 'detail_cart.dart';
 
@@ -90,7 +93,8 @@ class _ListProductState extends State<ListProduct> {
 
   Future<void> readData() async {
     // String url = MyStyle().readAllProduct;
-    String url = 'http://somsakpharma.com/api/json_product.php?searchKey=$searchString&page=$page';
+    String url =
+        'http://somsakpharma.com/api/json_product.php?searchKey=$searchString&page=$page';
     if (myIndex != 0) {
       url = '${MyStyle().readProductWhereMode}$myIndex';
     }
@@ -114,20 +118,41 @@ class _ListProductState extends State<ListProduct> {
   }
 
   Widget showName(int index) {
-    return Text(filterProductAllModels[index].title);
+    return Row(
+      children: <Widget>[
+        Container(width: MediaQuery.of(context).size.width *0.7-50,
+          child: Text(
+            filterProductAllModels[index].title,
+            style: MyStyle().h2Style,
+          ),
+        ),
+      ],
+    );
   }
 
   Widget showStock(int index) {
-    return Text(filterProductAllModels[index].stock.toString());
+    return Row(
+      children: <Widget>[
+        Text(
+          'Price = ${filterProductAllModels[index].stock.toString()}/Unit',
+          style: MyStyle().h3Style,
+        ),
+      ],
+    );
     // return Text('na');
   }
 
   Widget showText(int index) {
     return Container(
-      height: MediaQuery.of(context).size.width * 0.5,
-      width: MediaQuery.of(context).size.width * 0.5,
+      padding: EdgeInsets.only(
+        left: 20.0,
+        right: 16.0,
+      ),
+      // color: Colors.grey,
+      // height: MediaQuery.of(context).size.width * 0.5,
+      width: MediaQuery.of(context).size.width * 0.7 - 10,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[showName(index), showStock(index)],
       ),
     );
@@ -136,7 +161,7 @@ class _ListProductState extends State<ListProduct> {
   Widget showImage(int index) {
     return Container(
       padding: EdgeInsets.all(5.0),
-      width: MediaQuery.of(context).size.width * 0.4,
+      width: MediaQuery.of(context).size.width * 0.3,
       child: Image.network(filterProductAllModels[index].photo),
     );
   }
@@ -148,11 +173,13 @@ class _ListProductState extends State<ListProduct> {
         itemCount: productAllModels.length,
         itemBuilder: (BuildContext buildContext, int index) {
           return GestureDetector(
-            child: Row(
-              children: <Widget>[
-                showImage(index),
-                showText(index),
-              ],
+            child: Card(
+              child: Row(
+                children: <Widget>[
+                  showImage(index),
+                  showText(index),
+                ],
+              ),
             ),
             onTap: () {
               MaterialPageRoute materialPageRoute =
@@ -190,37 +217,28 @@ class _ListProductState extends State<ListProduct> {
 
   Widget searchForm() {
     return Container(
+      decoration: MyStyle().boxLightGrey,
       // color: Colors.grey,
-      padding:
-          EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0, bottom: 20.0),
+      margin: EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0, bottom: 20.0),
       child: ListTile(
-        trailing: IconButton(icon: Icon(Icons.search), onPressed: () {
-          print('searchString ===>>> $searchString');
+        trailing: IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              print('searchString ===>>> $searchString');
 
-          setState(() {
-            page = 1;
-            productAllModels.clear();
-            readData();
-          });
-
-        }),
+              setState(() {
+                page = 1;
+                productAllModels.clear();
+                readData();
+              });
+            }),
         title: TextField(
-          decoration: InputDecoration(hintText: 'Search'),
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            hintText: 'Search',
+          ),
           onChanged: (String string) {
             searchString = string.trim();
-
-            // statusStart = false;
-            // debouncer.run(() {
-            //   setState(() {
-            //     filterProductAllModels =
-            //         productAllModels.where((ProductAllModel productAllModel) {
-            //       return (productAllModel.title
-            //           .toLowerCase()
-            //           .contains(string.toLowerCase()));
-            //     }).toList();
-            //     amountListView = filterProductAllModels.length;
-            //   });
-            // });
           },
         ),
       ),
