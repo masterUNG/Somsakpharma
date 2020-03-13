@@ -14,11 +14,6 @@ import 'package:somsakpharma/widget/contact.dart';
 import 'package:somsakpharma/widget/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../utility/my_style.dart';
-import '../utility/my_style.dart';
-import '../utility/my_style.dart';
-import '../utility/my_style.dart';
-import '../utility/my_style.dart';
 import 'detail_cart.dart';
 
 class MyService extends StatefulWidget {
@@ -56,8 +51,14 @@ class _MyServiceState extends State<MyService> {
         size: 36.0,
         color: MyStyle().textColor,
       ),
-      title: Text('Home', style: TextStyle(color: MyStyle().textColor),),
-      subtitle: Text('Description Home', style: TextStyle(color: MyStyle().mainColor),),
+      title: Text(
+        'Home',
+        style: TextStyle(color: MyStyle().textColor),
+      ),
+      subtitle: Text(
+        'Description Home',
+        style: TextStyle(color: MyStyle().mainColor),
+      ),
       onTap: () {
         setState(() {
           readCart();
@@ -128,14 +129,6 @@ class _MyServiceState extends State<MyService> {
       print('QR code = $qrString');
       if (qrString != null) {
         decodeQRcode(qrString);
-
-        // MaterialPageRoute materialPageRoute =
-        //     MaterialPageRoute(builder: (BuildContext buildContext) {
-        //   return ResultCode(
-        //     result: qrString,
-        //   );
-        // }); // Link to  screen
-        // Navigator.of(context).push(materialPageRoute);
       }
     } catch (e) {
       print('e = $e');
@@ -297,9 +290,49 @@ class _MyServiceState extends State<MyService> {
     });
   }
 
+  BottomNavigationBarItem homeBotton() {
+    return BottomNavigationBarItem(
+      icon: Icon(Icons.home),
+      title: Text('Home'),
+    );
+  }
+
+  BottomNavigationBarItem cartBotton() {
+    return BottomNavigationBarItem(
+      icon: Icon(Icons.shopping_cart),
+      title: Text('Cart'),
+    );
+  }
+
+  BottomNavigationBarItem readQrBotton() {
+    return BottomNavigationBarItem(
+      icon: Icon(Icons.menu),
+      title: Text('QR code'),
+    );
+  }
+
+  Widget showBottomBarNav() {
+    return BottomNavigationBar(
+      items: <BottomNavigationBarItem>[
+        homeBotton(),
+        cartBotton(),
+        readQrBotton(),
+      ],
+      onTap: (int index) {
+        print('index = $index');
+        if (index == 1) {
+          routeToDetailCart();
+        } else if (index == 2) {
+          readQRcode();
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: showBottomBarNav(),
       appBar: AppBar(
         actions: <Widget>[
           showCart(),

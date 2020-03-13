@@ -1,21 +1,17 @@
 import 'dart:convert';
 
+import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:somsakpharma/models/price_list_model.dart';
+import 'package:somsakpharma/models/product_all_model.dart';
 
 import 'package:somsakpharma/models/product_all_model2.dart';
 import 'package:somsakpharma/models/user_model.dart';
+import 'package:somsakpharma/scaffold/detail.dart';
+import 'package:somsakpharma/scaffold/my_service.dart';
 import 'package:somsakpharma/utility/my_style.dart';
 import 'package:somsakpharma/utility/normal_dialog.dart';
-
-import '../utility/my_style.dart';
-import '../utility/my_style.dart';
-import '../utility/my_style.dart';
-import '../utility/my_style.dart';
-import '../utility/my_style.dart';
-import '../utility/my_style.dart';
-import '../utility/my_style.dart';
 
 class DetailCart extends StatefulWidget {
   final UserModel userModel;
@@ -267,7 +263,7 @@ class _DetailCartState extends State<DetailCart> {
     );
   }
 
-  // Post ค่าไปยัง API ที่ต้องการ
+  // Post ค่าไปยัง API ���ี่ต้องการ
   Future<void> editDetailCart(
       String productID, String unitSize, String memberID) async {
     String url =
@@ -518,7 +514,8 @@ class _DetailCartState extends State<DetailCart> {
       children: <Widget>[
         Container(
           margin: EdgeInsets.only(right: 30.0),
-          child: RaisedButton(color: MyStyle().textColor,
+          child: RaisedButton(
+            color: MyStyle().textColor,
             onPressed: () {
               if (transport == null) {
                 normalDialog(context, 'ยังไม่เลือก  การขอส่ง',
@@ -531,7 +528,10 @@ class _DetailCartState extends State<DetailCart> {
                 submitThread();
               }
             },
-            child: Text('Submit', style: TextStyle(color: Colors.white),),
+            child: Text(
+              'Submit',
+              style: TextStyle(color: Colors.white),
+            ),
           ),
         ),
       ],
@@ -572,9 +572,99 @@ class _DetailCartState extends State<DetailCart> {
     Navigator.of(context).pop();
   }
 
+  BottomNavigationBarItem homeBotton() {
+    return BottomNavigationBarItem(
+      icon: Icon(Icons.home),
+      title: Text('Home'),
+    );
+  }
+
+  BottomNavigationBarItem cartBotton() {
+    return BottomNavigationBarItem(
+      icon: Icon(Icons.shopping_cart),
+      title: Text('Cart'),
+    );
+  }
+
+  BottomNavigationBarItem readQrBotton() {
+    return BottomNavigationBarItem(
+      icon: Icon(Icons.menu),
+      title: Text('QR code'),
+    );
+  }
+
+  Widget showBottomBarNav() {
+    return BottomNavigationBar(
+      currentIndex: 1,
+      items: <BottomNavigationBarItem>[
+        homeBotton(),
+        cartBotton(),
+        readQrBotton(),
+      ],
+      onTap: (int index) {
+        if (index == 0) {
+          MaterialPageRoute route = MaterialPageRoute(
+            builder: (value) => MyService(
+              userModel: myUserModel,
+            ),
+          );
+          Navigator.of(context).pushAndRemoveUntil(route, (route) => false);
+        } else if (index == 2) {
+          readQRcode();
+        }
+      },
+    );
+  }
+
+  Future<void> readQRcode() async {
+    try {
+      String qrString = await BarcodeScanner.scan();
+      print('QR code = $qrString');
+      if (qrString != null) {
+        decodeQRcode(qrString);
+      }
+    } catch (e) {
+      print('e = $e');
+    }
+  }
+
+  Future<void> decodeQRcode(String code) async {
+    try {
+      String url = 'http://somsakpharma.com/api/json_product.php?bqcode=$code';
+      Response response = await get(url);
+      var result = json.decode(response.body);
+      print('result ===*******>>>> $result');
+
+      int status = result['status'];
+      print('status ===>>> $status');
+      if (status == 0) {
+        normalDialog(context, 'No Code', 'No $code in my Database');
+      } else {
+        var itemProducts = result['itemsProduct'];
+        for (var map in itemProducts) {
+          print('map ===*******>>>> $map');
+
+          ProductAllModel productAllModel = ProductAllModel.fromJson(map);
+          MaterialPageRoute route = MaterialPageRoute(
+            builder: (BuildContext context) => Detail(
+              userModel: myUserModel,
+              productAllModel: productAllModel,
+            ),
+          );
+          Navigator.of(context).push(route).then((value) {
+            setState(() {
+              readCart();
+            });
+          });
+        }
+      }
+    } catch (e) {}
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: showBottomBarNav(),
       appBar: AppBar(
         backgroundColor: MyStyle().textColor,
         title: Text('Detail Cart'),

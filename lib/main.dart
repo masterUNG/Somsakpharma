@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
     SystemChrome.setPreferredOrientations(
       <DeviceOrientation>[DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
     );
-    return MaterialApp(
+    return MaterialApp(title: 'Somsak Pharma',
       debugShowCheckedModeBanner: false,
       home: Authen(),
     );

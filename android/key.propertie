@@ -1,0 +1,4 @@
+storePassword=Abc12345
+keyPassword=Abc12345
+keyAlias=key
+storeFile=/Users/masterung/MyWorkSpace/ConsultFlutter/Somsakpharma/android/key/key.jks
